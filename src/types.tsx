@@ -1,4 +1,4 @@
 export interface TrainingData {
-    date: string,
+    date: Date,
     path: number
 }

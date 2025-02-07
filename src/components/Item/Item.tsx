@@ -1,3 +1,4 @@
+import moment from "moment";
 import { TrainingData } from "../../types";
 
 export default function Item({ data, onDelete, onEdit }: {
@@ -8,7 +9,7 @@ export default function Item({ data, onDelete, onEdit }: {
 
     return (
         <tr>
-            <td>{data.date}</td>
+            <td>{moment(data.date).format('DD.MM.YY')}</td>
             <td>{data.path}</td>
             <td>
                 <button onClick={() => onEdit(data)}>✎</button>

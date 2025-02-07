@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { TrainingData } from "../../types";
 import "./InputForm.css"
+import moment from "moment";
 
 export default function InputForm({ dataProp, onOk }: { dataProp: TrainingData, onOk: (newData: TrainingData) => void }) {
 
@@ -16,6 +17,16 @@ export default function InputForm({ dataProp, onOk }: { dataProp: TrainingData, 
 
     const handleClick = () => {
         onOk(form);
+    }
+
+    function formatDate(date: Date) : string{
+        if(moment(date).isValid()){
+            return `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
+        }
+        else
+        {
+            return "";
+        }
     }
 
     return (
@@ -38,7 +49,7 @@ export default function InputForm({ dataProp, onOk }: { dataProp: TrainingData, 
                             <td>
                                 <input
                                     id="date" name="date"
-                                    value={form.date}
+                                    value={formatDate(form.date)}
                                     type="text"
                                     pattern="[0-9]{2}[.][0-9]{2}[.][0-9]{2}"
                                     onChange={handleNameChange} />

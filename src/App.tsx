@@ -5,7 +5,7 @@ import { TrainingData } from "./types";
 
 function App() {
 
-  let a: TrainingData = { date: '', path: 0 }
+  let a: TrainingData = { date: new Date(), path: 0 }
   let b: TrainingData[] = [];
   const [state, setState] = useState({
     trainingData: a,
@@ -19,6 +19,9 @@ function App() {
       newArray.push(state.list[i]);
     }
     newArray.push(newData);
+    
+    //const sorted = newArray.sort((a, b) => a.date < b.date ? -1 : 1);
+
     setState({ trainingData: newData, list: newArray });
   }
 
