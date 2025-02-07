@@ -1,35 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import InputForm from "./components/InputForm/InputForm"
+import List from "./components/List/List"
+import { TrainingData } from "./types";
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  let a: TrainingData = { date: '', path: 0 }
+  let b: TrainingData[] = [];
+  const [state, setState] = useState({
+    trainingData: a,
+    list: b
+  });
+
+
+  function submit(newData: TrainingData) {
+    let newArray = [];
+    for (let i = 0; i < state.list.length; i++) {
+      newArray.push(state.list[i]);
+    }
+    newArray.push(newData);
+    setState({ trainingData: newData, list: newArray });
+  }
+
+  function deleteItem(newData: TrainingData) {
+    console.log(newData);
+    let newArray = [];
+    for (let i = 0; i < state.list.length; i++) {
+      newArray.push(state.list[i]);
+    }
+
+    let rem = newArray.findIndex(newArray => newArray.date === newData.date);
+    if (rem !== -1) {
+      newArray.splice(rem, 1);
+    }
+
+    setState({ trainingData: newData, list: newArray });
+  }
+
+  function editItem(newData: TrainingData) {
+    setState({ trainingData: newData, list: state.list });
+    console.log(state.trainingData.date);
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div>
+      <InputForm dataProp={state.trainingData} onOk={(e) => submit(e)}></InputForm>
+      <List list={state.list} onDeleteItem={(e) => deleteItem(e)} onEditItem={(e) => {
+        editItem(e);
+      }}></List>
+    </div>
   )
 }
-
 export default App
