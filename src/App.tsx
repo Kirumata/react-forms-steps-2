@@ -5,22 +5,27 @@ import { TrainingData } from "./types";
 
 function App() {
 
-  let a: TrainingData = { date: new Date(), path: 0 }
+  let a: TrainingData = { date: '', path: 0 }
   let b: TrainingData[] = [];
   const [state, setState] = useState({
     trainingData: a,
     list: b
   });
 
-
   function submit(newData: TrainingData) {
     let newArray = [];
     for (let i = 0; i < state.list.length; i++) {
       newArray.push(state.list[i]);
     }
-    newArray.push(newData);
-    
-    //const sorted = newArray.sort((a, b) => a.date < b.date ? -1 : 1);
+    let index: number = newArray.findIndex(item => item.date === newData.date);
+
+    if (index === -1) {
+      newArray.push(newData);
+    }
+    else {
+      newArray[index].path = newArray[index].path + newData.path;
+    }
+
 
     setState({ trainingData: newData, list: newArray });
   }

@@ -9,7 +9,7 @@ export default function Item({ data, onDelete, onEdit }: {
 
     return (
         <tr>
-            <td>{moment(data.date).format('DD.MM.YY')}</td>
+            <td>{data.date}</td>
             <td>{data.path}</td>
             <td>
                 <button onClick={() => onEdit(data)}>✎</button>

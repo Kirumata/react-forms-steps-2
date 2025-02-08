@@ -12,21 +12,14 @@ export default function InputForm({ dataProp, onOk }: { dataProp: TrainingData, 
 
     const handleNameChange = ({ target }) => {
         const { name, value } = target;
-        setForm(prevForm => ({ ...prevForm, [name]: value }));
+        setForm(prevForm => ({ 
+            ...prevForm, 
+            [name]: target.type === 'number' ? parseInt(value) : value 
+        }));
     }
 
     const handleClick = () => {
         onOk(form);
-    }
-
-    function formatDate(date: Date) : string{
-        if(moment(date).isValid()){
-            return `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
-        }
-        else
-        {
-            return "";
-        }
     }
 
     return (
@@ -49,7 +42,7 @@ export default function InputForm({ dataProp, onOk }: { dataProp: TrainingData, 
                             <td>
                                 <input
                                     id="date" name="date"
-                                    value={formatDate(form.date)}
+                                    value={form.date}
                                     type="text"
                                     pattern="[0-9]{2}[.][0-9]{2}[.][0-9]{2}"
                                     onChange={handleNameChange} />
@@ -57,6 +50,7 @@ export default function InputForm({ dataProp, onOk }: { dataProp: TrainingData, 
                             <td>
                                 <input
                                     id="path" name="path"
+                                    type="number"
                                     value={form.path}
                                     onChange={handleNameChange} />
                             </td>
