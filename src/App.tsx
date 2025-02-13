@@ -2,6 +2,8 @@ import { useState } from "react";
 import InputForm from "./components/InputForm/InputForm"
 import List from "./components/List/List"
 import { TrainingData } from "./types";
+import "./utils"
+import { compareByDate } from "./utils";
 
 function App() {
 
@@ -25,7 +27,7 @@ function App() {
     else {
       newArray[index].path = newArray[index].path + newData.path;
     }
-
+    newArray.sort(compareByDate);
 
     setState({ trainingData: newData, list: newArray });
   }

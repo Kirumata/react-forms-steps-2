@@ -43,8 +43,7 @@ export default function InputForm({ dataProp, onOk }: { dataProp: TrainingData, 
                                 <input
                                     id="date" name="date"
                                     value={form.date}
-                                    type="text"
-                                    pattern="[0-9]{2}[.][0-9]{2}[.][0-9]{2}"
+                                    type="date"
                                     onChange={handleNameChange} />
                             </td>
                             <td>
