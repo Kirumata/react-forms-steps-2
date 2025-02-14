@@ -1,30 +1,9 @@
-import { useState } from "react";
-import { TrainingData } from "../../types";
 import "./InputForm.css"
-import moment from "moment";
 
-export default function InputForm({ dataProp, onOk }: { dataProp: TrainingData, onOk: (newData: TrainingData) => void }) {
-
-    const [form, setForm] = useState({
-        date: dataProp.date,
-        path: dataProp.path
-    });
-
-    const handleNameChange = ({ target }) => {
-        const { name, value } = target;
-        setForm(prevForm => ({ 
-            ...prevForm, 
-            [name]: target.type === 'number' ? parseInt(value) : value 
-        }));
-    }
-
-    const handleClick = () => {
-        onOk(form);
-    }
-
+export default function InputForm(props) {
     return (
         <div>
-            <form>
+            <form onSubmit={(e) => props.handleSubmit(e)}>
 
                 <table>
                     <thead>
@@ -42,22 +21,22 @@ export default function InputForm({ dataProp, onOk }: { dataProp: TrainingData, 
                             <td>
                                 <input
                                     id="date" name="date"
-                                    value={form.date}
+                                    value={props.date}
                                     type="date"
-                                    onChange={handleNameChange} />
+                                    onChange={(e) => props.handleDateChange(e.target.value)} />
                             </td>
                             <td>
                                 <input
                                     id="path" name="path"
                                     type="number"
-                                    value={form.path}
-                                    onChange={handleNameChange} />
+                                    value={props.path}
+                                    onChange={(e) => props.handlePathChange(e.target.value)} />
                             </td>
+                            <td><input type="submit" value="Submit" /></td>
                         </tr>
                     </tbody>
                 </table>
             </form>
-            <button onClick={handleClick} >OK</button>
         </div>
     )
 }

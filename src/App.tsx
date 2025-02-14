@@ -7,36 +7,15 @@ import { compareByDate } from "./utils";
 
 function App() {
 
-  let a: TrainingData = { date: '', path: 0 }
-  let b: TrainingData[] = [];
-  const [state, setState] = useState({
-    trainingData: a,
-    list: b
-  });
-
-  function submit(newData: TrainingData) {
-    let newArray = [];
-    for (let i = 0; i < state.list.length; i++) {
-      newArray.push(state.list[i]);
-    }
-    let index: number = newArray.findIndex(item => item.date === newData.date);
-
-    if (index === -1) {
-      newArray.push(newData);
-    }
-    else {
-      newArray[index].path = newArray[index].path + newData.path;
-    }
-    newArray.sort(compareByDate);
-
-    setState({ trainingData: newData, list: newArray });
-  }
+  const [state, setState] = useState<TrainingData>({ date: '', path: 0 });
+  const [list, setList] = useState<TrainingData[]>([]);
+  const [action, setAction] = useState<"edit" | "add">("add");
 
   function deleteItem(newData: TrainingData) {
     console.log(newData);
     let newArray = [];
-    for (let i = 0; i < state.list.length; i++) {
-      newArray.push(state.list[i]);
+    for (let i = 0; i < list.length; i++) {
+      newArray.push(list[i]);
     }
 
     let rem = newArray.findIndex(newArray => newArray.date === newData.date);
@@ -44,21 +23,63 @@ function App() {
       newArray.splice(rem, 1);
     }
 
-    setState({ trainingData: newData, list: newArray });
+    setState(newData);
+    setList(newArray);
   }
 
   function editItem(newData: TrainingData) {
-    setState({ trainingData: newData, list: state.list });
-    console.log(state.trainingData.date);
+    setState(newData);
+    setAction("edit");
+  }
+
+  function handleDateChange(e) {
+    let newData: TrainingData = { date: e, path: state.path }
+    setState(newData);
+  }
+
+  function handlePathChange(e) {
+    let newData: TrainingData = { date: state.date, path: parseInt(e) }
+    setState(newData);
+  }
+
+  function handleSubmit(e) {
+    let newArray = [];
+    for (let i = 0; i < list.length; i++) {
+      newArray.push(list[i]);
+    }
+    let index: number = newArray.findIndex(item => item.date === state.date);
+
+    if (index === -1) {
+      newArray.push(state);
+    }
+    else {
+      if (action == "add") {
+        newArray[index].path = newArray[index].path + state.path;
+      }
+      else {
+        newArray[index].path = state.path;
+        setAction("add");
+      }
+    }
+    newArray.sort(compareByDate);
+    setList(newArray);
+    e.preventDefault();
   }
 
   return (
     <div>
-      <InputForm dataProp={state.trainingData} onOk={(e) => submit(e)}></InputForm>
-      <List list={state.list} onDeleteItem={(e) => deleteItem(e)} onEditItem={(e) => {
-        editItem(e);
-      }}></List>
+      <InputForm {...{
+        date: state.date,
+        path: state.path,
+        handleDateChange: (e) => handleDateChange(e),
+        handlePathChange: (e) => handlePathChange(e),
+        handleSubmit: (e) => handleSubmit(e)
+      }}></InputForm>
+      <List list={list} onDeleteItem={(e) => deleteItem(e)} onEditItem={(e) => editItem(e)}></List>
     </div>
   )
 }
+/*
+
+*/
 export default App

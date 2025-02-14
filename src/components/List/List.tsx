@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { TrainingData } from "../../types";
 import Item from "../Item/Item";
 
@@ -10,7 +9,7 @@ export default function List({ list, onDeleteItem, onEditItem }: {
     
     let array = [];
     for (let i = 0; i < list.length; i++) {
-        array.push(<Item data={list[i]} onDelete={() => onDeleteItem(list[i])} onEdit={() => onEditItem(list[i])}></Item>);
+        array.push(<Item key={list[i].date} data={list[i]} onDelete={() => onDeleteItem(list[i])} onEdit={() => onEditItem(list[i])}></Item>);
     }
     return (
         <table>
